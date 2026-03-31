@@ -14,6 +14,13 @@ Tech Stack:
 - SQLite
 - Tailwind CSS
 
+## Key Feature: Streak Tracking
+
+This app calculates user streaks using date-based analysis.
+It checks for consecutive completion days and stops counting when a gap is found.
+
+This ensures accurate streak tracking rather than simple counting.
+
 How to Run
 - git clone ...
 - cd habitflow

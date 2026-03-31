@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <title>HabitFlow</title>
+</head>
+<body class="bg-gray-100">
+{% if error %}
+    <p style="color:red;">{{error}}</p>
+{% endif %}
+    <div class = "max-w-xl mx-auto mt-10 bg-white p-6 rounded-lg shadow">
+    <h1 class = "text-2xl font-bold mb-4">Habit Tracker</h1>
+        <div class = "flex justify-between items-center mb-4">
+        <p class = "text-sm text-gray-600x">{{user.email}}</p>
+        <form method="post" action="/logout">
+          <button class = "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Log Out</button>
+
+        </form>
+            </div>
+        <div class = "grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-center">
+            <div class="bg-gray-100 p-3 rounded">
+            <p class="text-sm text-gray-500">Total : </p>
+            <p class="text-xl font-bold"> {{ total }}</p>
+            </div>
+            <div class = "bg-gray-100 p-3 rounded">
+            <p class = "text-sm text-gray-500">Completed : </p>
+            <p class="text-xl font-bold">{{ completed }} </p>
+            </div>
+            <div class = "bg-gray-100 p-3 rounded">
+            <p class = "text-sm text-gray-500">Completion % : </p>
+            <p class = "text-xl font-bold text-green-500">{{ percent|round(2) }}%</p>
+            </div>
+            <div class = "bg-gray-100 p-3 rounded">
+            <p class = "text-sm font-bold text-red-500">🔥Streak : </p>
+            <p class = "text-xl font-bold text-red-500">{{ streak}} day{% if streak!=1 %}s{% endif %}</p>
+            </div>
+        </div>
+    <ul class = "space-y-2">{% if habits %}
+        {% for habit in habits %}
+
+            <li class = "flex justify-between items-center bg-gray-50 p-3 rounded">
+                <div>
+                    <strong>{{habit.id}}.</strong>
+                {{ habit.name }}
+                {% if habit.done %}
+                    <span class = "text-green-500 ml-2">🔥 Streak Active</span>
+                {% else %}
+                    <span class = "text-red-500 ml-2">Not Done</span>
+                {% endif %}
+                </div>
+
+                <div class = "flex gap-2">
+                {% if not habit.done %}
+                <form method = "POST" action = "/done" >
+                    <input type = "hidden" name = "index" value = "{{habit.id}}">
+                    <button class = "bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600">Done</button>
+
+
+                </form>
+                    {% endif %}
+                <form method = "POST" action = "/delete" >
+                    <input type = "hidden" name = "index" value = "{{habit.id}}">
+                    <button class = "bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+                </form>
+                </div>
+
+            </li>
+        {% endfor %}
+
+        {% else %}
+            <p class="text-gray-500">No habits yet</p>
+        {% endif %}
+
+    </ul>
+    <form method = "POST" action = "/add" class = "flex gap-2 pt-2 mt-2 mb-4">
+        <input type = "text" name = "habit" placeholder = "Enter Habit" class = "flex-1 border rounded px-3 py-2" required>
+        <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add</button>
+    </form>
+
+</div>
+</body>
+</html>
